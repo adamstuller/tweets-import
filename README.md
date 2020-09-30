@@ -21,7 +21,7 @@ Secondly, to start importing you need tweeter tweets (https://developer.twitter.
 
 ```
 npm install
-node ./node-script/index.js --file <path  to your file>
+node ./src/index.js --file <path to your file>
 ```
 
 This command starts concurent batch import. To avoid nested SELECT queries to get ids of hashtags and countries, this script uses internal state, 
@@ -31,5 +31,5 @@ and lack of ORM or similar abstraction significantly boosts performance.
 
 ##  !!! BEWARE !!! 
 
-In `postgres/configuration/00_init.sql` constrains on foreign keys are missing. They might be added or dropped to/from database after the import 
+In `src/configuration/00_init.sql` constrains on foreign keys are missing. They might be added or dropped to/from database after the import 
 by sql scripts in `postgres/scripts`. These constrains would not allow conncurrent imports of respective tables in streams if added on Initialization. 
