@@ -1,0 +1,1 @@
+module.export  = (arr) => arr.length != 0;
