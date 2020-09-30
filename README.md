@@ -32,4 +32,4 @@ and lack of ORM or similar abstraction significantly boosts performance.
 ##  !!! BEWARE !!! 
 
 In `postgres/configuration/00_init.sql` constrains on foreign keys are allready specified. In reality they were added to database after the import 
-by another sql. These constrains would not allow conncurrent imports of respective tables in streams. 
+by another sql. These constrains would not allow conncurrent imports of respective tables in streams. Add and drop constrains can be done with sql scripts in `./postgres/scripts`.

@@ -5,7 +5,6 @@ const fs = require("fs");
 const yargs = require("yargs");
 const unique = require("unique-stream");
 const FlattenTransformer = require("flatten-stream");
-const { exit, stdout } = require("process");
 const format = require("pg-format");
 const BatchStream = require("batch-stream");
 
