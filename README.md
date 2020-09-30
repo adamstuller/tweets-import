@@ -20,6 +20,7 @@ Secondly, to start importing you need tweeter tweets (https://developer.twitter.
  file in json or jsonl format. To start import just run: 
 
 ```
+npm install
 node ./node-script/index.js --file <path  to your file>
 ```
 
