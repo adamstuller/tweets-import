@@ -33,21 +33,21 @@ CREATE TABLE IF NOT EXISTS tweets (
     retweet_count INTEGER,
     favorite_count INTEGER,
     happened_at TIMESTAMP WITH TIME ZONE,
-    author_id BIGINT  FOREIGN KEY REFERENCES accounts(id),
-    country_id INTEGER  FOREIGN KEY REFERENCES countries(id),
-    parent_id VARCHAR(20)  FOREIGN KEY REFERENCES tweets(id)
+    author_id BIGINT,
+    country_id INTEGER,
+    parent_id VARCHAR(20)
 );
 
 CREATE TABLE IF NOT EXISTS tweet_mentions (
     ID SERIAL PRIMARY KEY,
-    account_id BIGINT FOREIGN KEY REFERENCES accounts(id),
-    tweet_id VARCHAR(20) FOREIGN KEY REFERENCES tweets(id),
+    account_id BIGINT,
+    tweet_id VARCHAR(20),
     CONSTRAINT unique_tweet_mention UNIQUE(account_id, tweet_id)
 );
 
 CREATE TABLE IF NOT EXISTS tweet_hashtags (
     id SERIAL PRIMARY KEY,
-    hashtag_id INTEGER FOREIGN KEY REFERENCES tweets(id),
-    tweet_id VARCHAR(20) FOREIGN KEY REFERENCES tweets(id),
+    hashtag_id INTEGER,
+    tweet_id VARCHAR(20),
     CONSTRAINT unique_tweet_hashtag UNIQUE(hashtag_id, tweet_id)
 );

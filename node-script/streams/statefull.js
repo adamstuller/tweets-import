@@ -15,15 +15,24 @@ const stateMap = ({
   favorite_count,
   created_at,
   user,
-  lang,
   retweeted_status,
   coordinates,
   id,
   entities,
+  place,
 }) => {
-  if (state.countryMap[lang] == null) {
-    state.countryMap[lang] = state.countryId;
-    state.countryId += 1;
+  let country ;
+  if (place != null && place.country_code != null) {
+    if (state.countryMap[place.country_code] == null) {
+      state.countryMap[place.country_code] = state.countryId;
+      state.countryId += 1;
+    }
+
+    country = {
+      id: state.countryMap[place.country_code],
+      code: place.country_code,
+      name: place.country,
+    };
   }
   const currHashtags = [];
   if (entities != null && entities.hashtags != null) {
@@ -66,10 +75,7 @@ const stateMap = ({
     happened_at: created_at,
     author_id: user.id,
     parent_id,
-    country: {
-      id: state.countryMap[lang],
-      code: lang,
-    },
+    country,
     hashtags: currHashtags || [],
     location: coordinates,
     user,
