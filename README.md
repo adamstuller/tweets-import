@@ -25,3 +25,8 @@ node ./node-script/index.js --file <path  to your file>
 
 This command starts concurent batch import.
 
+
+##  !!! BEWARE !!! 
+
+In `postgres/configuration/00_init.sql` constrains on foreign keys are allready specified. In reality they were added to database after the import 
+by another sql. These constrains would not allow conncurrent imports of respective tables in streams. 
