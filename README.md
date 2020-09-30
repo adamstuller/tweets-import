@@ -24,7 +24,9 @@ npm install
 node ./node-script/index.js --file <path  to your file>
 ```
 
-This command starts concurent batch import.
+This command starts concurent batch import. To avoid nested SELECT queries to get ids of hashtags and countries, this script uses internal state, 
+storing all hashtags and countries with  their respective ids in form of hash map (javascript object). This, along with batch, conncurrent imports 
+and lack of ORM or similar abstraction significantly boosts performance.  
 
 
 ##  !!! BEWARE !!! 
