@@ -4,7 +4,7 @@
 // };
 
 const countryWrite = (client, countries) => {
-  const queryString = `INSERT INTO countries (id, code) VALUES ${countries.join(",")} ON CONFLICT (id) DO NOTHING;`
+  const queryString = `INSERT INTO countries (id, code, name) VALUES ${countries.join(",")} ON CONFLICT (id) DO NOTHING;`
   console.log(`INSERTING ${countries.length} COUNTRIES`)
   return client.query(queryString);
 };

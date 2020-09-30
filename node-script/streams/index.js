@@ -14,7 +14,7 @@ const postgresWriteStream = databaseWritable(connection);
 const { userMap, userWrite, userFormat } = require("./user");
 const { tweetHashtagWrite } = require("./tweetHashtag");
 const { hashtagWrite } = require("./hashtag");
-const { countryWrite, countryQuery } = require("./country");
+const { countryWrite } = require("./country");
 const { tweetMap, tweetWrite, tweetFormat } = require("./tweet");
 const { stateMap, storeState } = require("./statefull");
 const { tweetMentionsWrite, formatTweetMentions } = require("./tweetMentions");
@@ -27,7 +27,6 @@ module.exports = {
   tweetPostgresWriteStream: postgresWriteStream(tweetWrite),
   userPostgresWriteStream: postgresWriteStream(userWrite),
   tweetMap,
-  emptyArrayFilter: require("./empty"),
   userMap,
   stateMap,
   storeState,

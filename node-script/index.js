@@ -5,7 +5,6 @@ const fs = require("fs");
 const yargs = require("yargs");
 const unique = require("unique-stream");
 const FlattenTransformer = require("flatten-stream");
-const { exit, stdout } = require("process");
 const format = require("pg-format");
 const BatchStream = require("batch-stream");
 
@@ -50,9 +49,10 @@ const inputStream = fs
   .pipe(ndjson.parse())
   .pipe(map(({ retweeted_status, ...rest }) => [retweeted_status, rest]))
   .pipe(new FlattenTransformer())
-  .pipe(filter(tweet => tweet != null))
+  .pipe(filter((tweet) => tweet != null))
   .pipe(map(stateMap));
 
+console.log("STARTING...........", Date.now());
 
 // Special case and final case... persisting state
 inputStream.on("finish", storeState);
@@ -66,22 +66,23 @@ inputStream
   .pipe(map(userFormat))
   .pipe(new BatchStream({ size: 100000 }))
   .pipe(userPostgresWriteStream)
-  .on("finish", () => console.log("ACCOUNTS INSERTED!"));
+  .on("finish", () => console.log("ACCOUNTS INSERTED!", Date.now()));
 
 inputStream
   .pipe(map(tweetMap))
   .pipe(map(tweetFormat))
   .pipe(new BatchStream({ size: 100000 }))
   .pipe(tweetPostgresWriteStream)
-  .on("finish", () => console.log("TWEETS INSERTED!"));
+  .on("finish", () => console.log("TWEETS INSERTED!", Date.now()));
 
 inputStream
-  .pipe(map(({ country }) => country))
+  .pipe(map((state) => state.country))
+  .pipe(filter((country) => country != null))
   .pipe(unique("code"))
-  .pipe(map(({ code, id }) => format("(%L)", [id, code])))
-  .pipe(new BatchStream({ size: 100000 }))
+  .pipe(map(({ code, id, name }) => format("(%L)", [id, code, name])))
+  .pipe(new BatchStream({ size: 4 }))
   .pipe(countriesPostgresWriteStream)
-  .on("finish", () => console.log("COUNTRIES INSERTED!"));
+  .on("finish", () => console.log("COUNTRIES INSERTED!", Date.now()));
 
 inputStream
   .pipe(map(({ hashtags }) => hashtags))
@@ -91,7 +92,7 @@ inputStream
   .pipe(map(({ value, hashtag_id }) => format("(%L)", [hashtag_id, value])))
   .pipe(new BatchStream({ size: 100000 }))
   .pipe(hashtagsPostgresWriteStream)
-  .on("finish", () => console.log("HASHTAGS INSERTED!"));
+  .on("finish", () => console.log("HASHTAGS INSERTED!", Date.now()));
 
 inputStream
   .pipe(map(({ hashtags }) => hashtags))
@@ -101,13 +102,12 @@ inputStream
   )
   .pipe(new BatchStream({ size: 100000 }))
   .pipe(tweetHashtagPostgresWriteStream)
-  .on("finish", () => console.log("TWEET HASHTAGS INSERTED!"));
+  .on("finish", () => console.log("TWEET HASHTAGS INSERTED!", Date.now()));
 
-  inputStream
+inputStream
   .pipe(map(({ tweet_mentions }) => tweet_mentions))
   .pipe(new FlattenTransformer())
   .pipe(map(formatTweetMentions))
   .pipe(new BatchStream({ size: 100000 }))
   .pipe(tweetMentionsPostgresWriteStream)
-  .on("finish", () => console.log("TWEET MENTIONS INSERTED!"));
-
+  .on("finish", () => console.log("TWEET MENTIONS INSERTED!", Date.now()));

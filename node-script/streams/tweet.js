@@ -18,7 +18,7 @@ const tweetMap = ({
   favorite_count,
   happened_at,
   author_id,
-  country_id: country.id,
+  country_id: country == null ? null : country.id,
   parent_id,
 });
 
