@@ -52,8 +52,7 @@ const inputStream = fs
   .pipe(new FlattenTransformer())
   .pipe(filter(tweet => tweet != null))
   .pipe(map(stateMap));
-// .pipe(ndjson.serialize())
-// .pipe(process.stdout);
+
 
 // Special case and final case... persisting state
 inputStream.on("finish", storeState);
@@ -67,8 +66,6 @@ inputStream
   .pipe(map(userFormat))
   .pipe(new BatchStream({ size: 100000 }))
   .pipe(userPostgresWriteStream)
-  // .pipe(ndjson.serialize())
-  // .pipe(process.stdout)
   .on("finish", () => console.log("ACCOUNTS INSERTED!"));
 
 inputStream
@@ -94,8 +91,6 @@ inputStream
   .pipe(map(({ value, hashtag_id }) => format("(%L)", [hashtag_id, value])))
   .pipe(new BatchStream({ size: 100000 }))
   .pipe(hashtagsPostgresWriteStream)
-  // .pipe(ndjson.serialize())
-  // .pipe(process.stdout)
   .on("finish", () => console.log("HASHTAGS INSERTED!"));
 
 inputStream
@@ -113,9 +108,6 @@ inputStream
   .pipe(new FlattenTransformer())
   .pipe(map(formatTweetMentions))
   .pipe(new BatchStream({ size: 100000 }))
-  // .pipe(ndjson.serialize())
-  // .pipe(process.stdout)
   .pipe(tweetMentionsPostgresWriteStream)
   .on("finish", () => console.log("TWEET MENTIONS INSERTED!"));
 
-// tweetMentionsStream.pipe(ndjson.serialize()).pipe(process.stdout);
