@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const STATE_FILE =
-  "/Users/adamstuller/Skolicka/Semester7/PDT/tweets/node-script/state/state.json";
+  "/Users/adamstuller/Skolicka/Semester7/PDT/tweets/src/state/state.json";
 
 const state = require(STATE_FILE);
 
