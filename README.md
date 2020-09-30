@@ -5,7 +5,7 @@
 Firstly  clone this project with git. 
 
 ```
-git clone
+git clone https://github.com/AdamStuller/tweets-import.git
 ```
 
 Firstly you must have POSTGRES server spinned up. To do so you can use script `postgres.sh` in postgresdirectory. 
